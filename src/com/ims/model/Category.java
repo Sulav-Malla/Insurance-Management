@@ -4,41 +4,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
-    private String name;
-    private int categoryID;
-    private List<SubCategory> subCategories;
+	private static int categoryIDCounter = 1;
+	private String name;
+	private int categoryID;
+	private List<SubCategory> subCategories;
 
-    public Category(String name, int categoryID) {
-        this.name = name;
-        this.categoryID = categoryID;
-        this.subCategories = new ArrayList<>();
-    }
+	public Category(String name) {
+		this.name = name;
+		this.categoryID = categoryIDCounter++;
+		this.subCategories = new ArrayList<>();
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public int getCategoryID() {
-        return categoryID;
-    }
+	public int getCategoryID() {
+		return categoryID;
+	}
 
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
-    }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Subcategories Available: [ ");
+		int index = subCategories.size();
+		for (int i = 0; i < index; i++) {
+			if (i < index - 1) {
+				String name = subCategories.get(i).getName();
+				sb.append(name + ", ");
+			} else { // to avoid extra comma
+				String name = subCategories.get(i).getName();
+				sb.append(name);
+			}
 
-    public List<SubCategory> getSubCategories() {
-        return subCategories;
-    }
+		}
+		sb.append(" ]");
+		return "Category ID: " + categoryID + "\n" + "Category Name: " + name + "\n" + sb;
+	}
 
-    public void addSubCategory(SubCategory subCategory) {
-        this.subCategories.add(subCategory);
-    }
+	public void setCategoryID(int categoryID) {
+		this.categoryID = categoryID;
+	}
 
-    public void removeSubCategory(SubCategory subCategory) {
-        this.subCategories.remove(subCategory);
-    }
+	public List<SubCategory> getSubCategories() {
+		return subCategories;
+	}
+
+	public void addSubCategory(SubCategory subCategory) {
+		this.subCategories.add(subCategory);
+	}
+
+	public void removeSubCategory(SubCategory subCategory) {
+		this.subCategories.remove(subCategory);
+	}
 }

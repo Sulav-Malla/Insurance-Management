@@ -1,6 +1,7 @@
 package com.ims.model;
 
 public class Policy {
+	private static int policyIDCounter = 1;
     private int policyId;
     private String policyName;
     private Category category;
@@ -11,10 +12,10 @@ public class Policy {
     private int policyTerm;
     private String status;
 
-    public Policy(int policyId, String policyName, Category category, SubCategory subCategory,
+    public Policy( String policyName, Category category, SubCategory subCategory,
                   String description, double premiumAmount, double coverageAmount, 
                   int policyTerm, String status) {
-        this.policyId = policyId;
+        this.policyId = policyIDCounter++;
         this.policyName = policyName;
         this.category = category;
         this.subCategory = subCategory;
