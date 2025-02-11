@@ -13,6 +13,7 @@ public class UserDAOImpl implements UserDAO {
 
 	private static List<Customer> usrList = new ArrayList<>();
 	private static List<User> adminList = new ArrayList<>();
+
 	public static List<Customer> getUsrList() {
 		return usrList;
 	}
@@ -21,27 +22,47 @@ public class UserDAOImpl implements UserDAO {
 		return adminList;
 	}
 
-	
 	@Override
 	public void registerAdmin() {
-		
+		boolean isNewUser = true;
 		System.out.println("Enter First Name:");
 		String fname = sc.next();
 		System.out.println("Enter Last Name:");
 		String lname = sc.next();
 		System.out.println("Enter Email:");
 		String email = sc.next();
+
 		System.out.println("Enter User Name:");
 		String uname = sc.next();
-		System.out.println("Enter Password:");
-		String pass = sc.next();
-		User usr = new User(fname, lname, email, uname, pass);
-		adminList.add(usr);
-		System.out.println("Registration Successful");
+		for (User admin : adminList) {
+			if (admin.getUserName().equals(uname)) {
+				isNewUser = false;
+				System.out.println("Username already exists!");
+				break;
+			}
+		}
+
+		for (Customer customer : usrList) {
+			if (customer.getUserName().equals(uname)) {
+				isNewUser = false;
+				System.out.println("Username already exists!");
+				break;
+			}
+		}
+
+		if (isNewUser) {
+			System.out.println("Enter Password:");
+			String pass = sc.next();
+			User usr = new User(fname, lname, email, uname, pass);
+			adminList.add(usr);
+			System.out.println("Registration Successful");
+		}
 	}
-	
+
+
 	@Override
 	public void registerCustomer() {
+		boolean isNewUser = true;
 		System.out.println("Enter First Name:");
 		String fname = sc.next();
 		System.out.println("Enter Last Name:");
@@ -50,12 +71,27 @@ public class UserDAOImpl implements UserDAO {
 		String email = sc.next();
 		System.out.println("Enter User Name:");
 		String uname = sc.next();
-		System.out.println("Enter Password:");
-		String pass = sc.next();
-		Customer usr = new Customer(fname, lname, email, uname, pass);
-		usrList.add(usr);
-		System.out.println("Registration Successful");
-		
+		for (User admin : adminList) {
+			if (admin.getUserName().equals(uname)) {
+				isNewUser = false;
+				System.out.println("Username already exists!");
+				break;
+			}
+		}
+		for (Customer customer : usrList) {
+			if (customer.getUserName().equals(uname)) {
+				isNewUser = false;
+				System.out.println("Username already exists!");
+				break;
+			}
+		}
+		if (isNewUser) {
+			System.out.println("Enter Password:");
+			String pass = sc.next();
+			Customer usr = new Customer(fname, lname, email, uname, pass);
+			usrList.add(usr);
+			System.out.println("Registration Successful");
+		}
 	}
 
 	@Override
@@ -68,11 +104,10 @@ public class UserDAOImpl implements UserDAO {
 		} // end of if
 		return false;
 	}
-	
 
 	@Override
 	public String forgotPassword(String email, String role) {
-		if(role.equals("admin")){ 
+		if (role.equals("admin")) {
 			if (!adminList.isEmpty()) {
 				for (User u : adminList) {
 					if (u.getEmail().equals(email))
@@ -80,8 +115,7 @@ public class UserDAOImpl implements UserDAO {
 				}
 			} // end of if
 			return "";
-		}
-		else { // for customers
+		} else { // for customers
 			if (!usrList.isEmpty()) {
 				for (Customer u : usrList) {
 					if (u.getEmail().equals(email))
@@ -90,7 +124,7 @@ public class UserDAOImpl implements UserDAO {
 			} // end of if
 			return "";
 		}
-		
+
 	}
 
 	@Override
@@ -103,7 +137,5 @@ public class UserDAOImpl implements UserDAO {
 		} // end of if
 		return null;
 	}
-
-
 
 }

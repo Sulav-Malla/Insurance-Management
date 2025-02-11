@@ -14,7 +14,7 @@ public class LoginClient {
 
 		while (true) {
 			System.out.println("============================================");
-			System.out.println("               1) Login             ");
+			System.out.println("               1) Login              ");
 			System.out.println("               2) Register                     ");
 			System.out.println("               3) ForgotPassword              ");
 			System.out.println("               4) Exit              ");
@@ -26,31 +26,60 @@ public class LoginClient {
 			switch (choice) {
 
 			case 1:
-				System.out.println("enter User Name");
-				String uname = sc.next();
-				System.out.println("enter Password ");
-				String pass = sc.next();
-				if (uname.equals("superadmin") && pass.equals("pass")) {
-					UserMenu.adminMenu();
-				} else {
-					boolean isAdmin = daoImpl.verifyUnameAndPwd(uname, pass);
-					if (isAdmin) {
-						UserMenu.adminMenu();
-						System.out.println("Valid Admin!");
-					} else {
-						Customer customerUsr = daoImpl.getCustomer(uname, pass);
-						if (customerUsr != null) {
-							System.out.println("Valid Customer!");
+                // Loop for valid login type choice
+                int loginChoice = 0;
+                while (loginChoice != 1 && loginChoice != 2 && loginChoice != 3) {
+                    System.out.println("Choose login type:");
+                    System.out.println("1. Admin");
+                    System.out.println("2. Customer");
+                    System.out.println("3. Back");
+                    loginChoice = sc.nextInt();
 
-							UserMenu.userMenu(customerUsr);
+                    if (loginChoice == 1) {
+                        // Admin login process
+                        System.out.println("Enter Admin Username:");
+                        String adminName = sc.next();
+                        System.out.println("Enter Admin Password:");
+                        String adminPass = sc.next();
 
-						} else {
-							System.out.println("Make sure you entered your credentials correctly!");
-						}
-					}
-				}
+                        // Hardcoded superadmin credentials
+                        if (adminName.equals("superadmin") && adminPass.equals("pass")) {
+                            UserMenu.adminMenu();
+                            System.out.println("Valid Admin!");
+                        } else {
+                            boolean isAdmin = daoImpl.verifyUnameAndPwd(adminName, adminPass);
+                            if (isAdmin) {
+                                UserMenu.adminMenu();
+                                System.out.println("Valid Admin!");
+                            } else {
+                                System.out.println("Invalid Admin credentials!");
+                            }
+                        }
+                        break;
+                    } else if (loginChoice == 2) {
+                        // Customer login process
+                        System.out.println("Enter Customer Username:");
+                        String custName = sc.next();
+                        System.out.println("Enter Customer Password:");
+                        String custPass = sc.next();
 
-				break;
+                        Customer customerUsr = daoImpl.getCustomer(custName, custPass);
+                        if (customerUsr != null) {
+                            System.out.println("Valid Customer!");
+                            UserMenu.userMenu(customerUsr);
+                        } else {
+                            System.out.println("Make sure you entered your credentials correctly!");
+                        }
+                        break;
+                    } else if (loginChoice == 3) {
+                        // Go back to the previous menu
+                        System.out.println("Going back to the main menu...");
+                        break;
+                    } else {
+                        System.out.println("Invalid choice! Please choose 1 for Admin, 2 for Customer, or 3 to go back.");
+                    }
+                }
+                break;
 			case 2:
 				while (true) {
 					System.out.println("Register as 1) Admin 2) Customer 3) Exit (Choose 1-3)");

@@ -57,7 +57,16 @@ public class CustomerInsuranceDAOImpl implements CustomerInsuranceDAO {
 				if (policy != null) {
 					usr.addApplyPolicy(policy);
 				}
+				else {
+					System.out.println("No such policy!");
+				}
 			}
+			else {
+				System.out.println("No such subcategory!");
+			}
+		}
+		else {
+			System.out.println("No such category!");
 		}
 
 	}
