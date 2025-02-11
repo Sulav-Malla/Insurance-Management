@@ -26,83 +26,101 @@ public class LoginClient {
 			switch (choice) {
 
 			case 1:
-                // Loop for valid login type choice
-                int loginChoice = 0;
-                while (loginChoice != 1 && loginChoice != 2 && loginChoice != 3) {
-                    System.out.println("Choose login type:");
-                    System.out.println("1. Admin");
-                    System.out.println("2. Customer");
-                    System.out.println("3. Back");
-                    loginChoice = sc.nextInt();
+				int loginChoice = 0;
 
-                    if (loginChoice == 1) {
-                        // Admin login process
-                        System.out.println("Enter Admin Username:");
-                        String adminName = sc.next();
-                        System.out.println("Enter Admin Password:");
-                        String adminPass = sc.next();
+				while (true) {
+					System.out.println("Choose login type:");
+					System.out.println("1. Admin");
+					System.out.println("2. Customer");
+					System.out.println("3. Back");
 
-                        // Hardcoded superadmin credentials
-                        if (adminName.equals("superadmin") && adminPass.equals("pass")) {
-                            UserMenu.adminMenu();
-                            System.out.println("Valid Admin!");
-                        } else {
-                            boolean isAdmin = daoImpl.verifyUnameAndPwd(adminName, adminPass);
-                            if (isAdmin) {
-                                UserMenu.adminMenu();
-                                System.out.println("Valid Admin!");
-                            } else {
-                                System.out.println("Invalid Admin credentials!");
-                            }
-                        }
-                        break;
-                    } else if (loginChoice == 2) {
-                        // Customer login process
-                        System.out.println("Enter Customer Username:");
-                        String custName = sc.next();
-                        System.out.println("Enter Customer Password:");
-                        String custPass = sc.next();
+					if (sc.hasNextInt()) {
+						loginChoice = sc.nextInt();
 
-                        Customer customerUsr = daoImpl.getCustomer(custName, custPass);
-                        if (customerUsr != null) {
-                            System.out.println("Valid Customer!");
-                            UserMenu.userMenu(customerUsr);
-                        } else {
-                            System.out.println("Make sure you entered your credentials correctly!");
-                        }
-                        break;
-                    } else if (loginChoice == 3) {
-                        // Go back to the previous menu
-                        System.out.println("Going back to the main menu...");
-                        break;
-                    } else {
-                        System.out.println("Invalid choice! Please choose 1 for Admin, 2 for Customer, or 3 to go back.");
-                    }
-                }
-                break;
+						if (loginChoice == 1) { // Admin login process
+
+							System.out.println("Enter Admin Username:");
+							String adminName = sc.next();
+							System.out.println("Enter Admin Password:");
+							String adminPass = sc.next();
+
+							if (adminName.equals("superadmin") && adminPass.equals("pass")) {
+								System.out.println("Valid Admin!");
+								UserMenu.adminMenu();
+							} else {
+								boolean isAdmin = daoImpl.verifyUnameAndPwd(adminName, adminPass);
+								if (isAdmin) {
+									System.out.println("Valid Admin!");
+									UserMenu.adminMenu();
+								} else {
+									System.out.println("Invalid Admin credentials!");
+								}
+							}
+							break;
+						} // end of Admin if
+
+						else if (loginChoice == 2) { // customer login
+
+							System.out.println("Enter Customer Username:");
+							String custName = sc.next();
+							System.out.println("Enter Customer Password:");
+							String custPass = sc.next();
+
+							Customer customerUsr = daoImpl.getCustomer(custName, custPass);
+							if (customerUsr != null) {
+								System.out.println("Valid Customer!");
+								UserMenu.userMenu(customerUsr);
+							} else {
+								System.out.println("Make sure you entered your credentials correctly!");
+							}
+							break;
+						} // end of customer if
+
+						else if (loginChoice == 3) {
+							// Go back to the previous menu
+							System.out.println("Going back to the main menu...");
+							break;
+						} else {
+							System.out.println(
+									"Invalid choice! Please choose 1 for Admin, 2 for Customer, or 3 to go back.");
+						}
+					} // end of if(hasNextInt)
+
+					else {
+						System.out.println("Invalid input! Please enter a number (1, 2, or 3).");
+						sc.next();
+					}
+				} // end of while
+				break;
+
 			case 2:
 				while (true) {
 					System.out.println("Register as 1) Admin 2) Customer 3) Exit (Choose 1-3)");
-					int regChoice = sc.nextInt();
-
-					if (regChoice == 1) {
-						System.out.println("Enter access code: ");
-						int usrCode = sc.nextInt();
-						int accessCode = 1234;
-						if (usrCode == accessCode) {
-							daoImpl.registerAdmin();
+					if (sc.hasNextInt()) {
+						int regChoice = sc.nextInt();
+						if (regChoice == 1) {
+							System.out.println("Enter access code: ");
+							int usrCode = sc.nextInt();
+							int accessCode = 1234;
+							if (usrCode == accessCode) {
+								daoImpl.registerAdmin();
+								break;
+							} else {
+								System.out.println("Invalid access code. Please try again.");
+							}
+						} else if (regChoice == 2) {
+							daoImpl.registerCustomer();
+							break;
+						} else if (regChoice == 3) {
+							System.out.println("Exiting registration...");
 							break;
 						} else {
-							System.out.println("Invalid access code. Please try again.");
+							System.out.println("Invalid choice! Please choose between 1, 2, or 3.");
 						}
-					} else if (regChoice == 2) {
-						daoImpl.registerCustomer();
-						break;
-					} else if (regChoice == 3) {
-						System.out.println("Exiting registration...");
-						break;
-					} else {
-						System.out.println("Invalid choice! Please choose between 1, 2, or 3.");
+					} // end of if(hasNextInt)
+					else {
+						System.out.println("Invalid input! Please enter a number (1, 2, or 3).");
+						sc.next();
 					}
 				}
 				break;
